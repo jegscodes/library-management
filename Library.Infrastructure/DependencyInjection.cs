@@ -1,3 +1,5 @@
+using Library.Infrastructure.Persistence.Interceptors;
+
 namespace Library.Infrastructure;
 
 /// <summary>
@@ -21,6 +23,8 @@ public static class DependencyInjection
         {
             throw new ArgumentNullException(nameof(connectionString), "Connection string not found.");
         }
+
+        services.AddScoped<ISaveChangesInterceptor, EntityAuditAndEventInterceptor>();
 
         services.AddDbContext<LibraryDbContext>((provider, options) =>
         {

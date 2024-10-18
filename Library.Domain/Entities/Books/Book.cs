@@ -3,8 +3,15 @@ namespace Library.Domain.Entities.Books;
 /// <summary>
 /// Represents a book in the library.
 /// </summary>
-public class Book : Entity
+public class Book : Entity, IAggregateRoot
 {
+    public Book(int authorId, string isbn, DateTime publishedDate, string title)
+    {
+        Title = title;
+        ISBN = new BookIdentifier(isbn);
+        AuthorId = authorId;
+        PublishedDate = publishedDate;
+    }
     /// <summary>
     /// Gets the author of the book.
     /// </summary>
@@ -19,7 +26,7 @@ public class Book : Entity
     /// Gets the International Standard Book Number (ISBN) for the book.
     /// ISBN has minimum length of 10, maximum length of 13 and either starts with 978 or 979.
     /// </summary>
-    public string ISBN { get; private set; }
+    public BookIdentifier ISBN { get; private set; }
 
     /// <summary>
     /// Gets the publication date of the book.

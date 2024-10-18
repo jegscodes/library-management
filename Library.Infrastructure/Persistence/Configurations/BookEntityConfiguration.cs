@@ -17,8 +17,11 @@ public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
         // Configure the ISBN property with a maximum length of 13 characters.
         // ISBN has minimum length of 10 and either starts with 978 or 979.
         // https://www.isbn-international.org/content/what-isbn/10
-        builder.Property(b => b.ISBN)
-               .HasMaxLength(13);
+        builder.OwnsOne(b => b.ISBN, isbnBuilder =>
+        {
+            isbnBuilder.Property(b => b.Value)
+                .HasMaxLength(17); // includes hyphen
+        });
 
         // Configure the many-to-one relationship with Author
         builder.HasOne(b => b.Author)
