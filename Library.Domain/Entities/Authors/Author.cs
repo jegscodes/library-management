@@ -3,7 +3,7 @@ namespace Library.Domain.Entities.Authors;
 /// <summary>
 /// Represents an author who wrote the book.
 /// </summary>
-public class Author : Entity
+public class Author : Entity, IAggregateRoot
 {
     private readonly List<Book> _books;
 
@@ -16,7 +16,6 @@ public class Author : Entity
     {
         Name = name;
         Email = email;
-        _books = new List<Book>();
     }
 
     /// <summary>
@@ -24,7 +23,7 @@ public class Author : Entity
     /// </summary>
     protected Author()
     {
-        _books = new List<Book>();
+        _books = [];
     }
 
     /// <summary>
@@ -41,4 +40,23 @@ public class Author : Entity
     /// Gets the name of the author.
     /// </summary>
     public string Name { get; private set; }
+
+    /// <summary>
+    /// Adds a book to the collection if it does not already exist based on its ISBN.
+    /// </summary>
+    /// <param name="book">The book to add. Each book must have a unique ISBN.</param>
+    /// <remarks>
+    /// This method ensures that no two books with the same ISBN can exist in the collection. 
+    /// Each title corresponds to a unique ISBN. 
+    /// If the ISBN of the provided book matches an existing book, the book will not be added.
+    /// </remarks>
+    public void AddBook(Book book)
+    {
+        var bookExist = _books.Any(e => e.ISBN == book.ISBN);
+
+        if (!bookExist)
+        {
+            _books.Add(book);
+        }
+    }
 }
