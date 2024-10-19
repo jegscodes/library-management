@@ -5,13 +5,25 @@ namespace Library.Domain.Entities.Books;
 /// </summary>
 public class Book : Entity, IAggregateRoot
 {
-    public Book(int authorId, string isbn, DateTime publishedDate, string title)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Book"/> class.
+    /// </summary>
+    /// <param name="authorId">The identifier of the author of the book.</param>
+    /// <param name="title">The title of the book. Must not be empty or null.</param>
+    /// <exception cref="ArgumentException">Thrown when the <paramref name="title"/> is empty or null.</exception>
+    public Book(int authorId, string title, PublishedDate publishedDate, BookIdentifier isbn)
     {
-        Title = title;
-        ISBN = new BookIdentifier(isbn);
         AuthorId = authorId;
+        Title = !string.IsNullOrEmpty(title) ? title : throw new ArgumentNullException("Title shouldn't be empty", nameof(title));
         PublishedDate = publishedDate;
+        ISBN = isbn;    
     }
+
+    /// <summary>
+    /// Protected constructor for ORM or serialization purposes.
+    /// </summary>
+    protected Book() { }
+
     /// <summary>
     /// Gets the author of the book.
     /// </summary>
@@ -31,7 +43,7 @@ public class Book : Entity, IAggregateRoot
     /// <summary>
     /// Gets the publication date of the book.
     /// </summary>
-    public DateTime PublishedDate { get; private set; }
+    public PublishedDate PublishedDate { get; private set; }
 
     /// <summary>
     /// Gets the title of the book.

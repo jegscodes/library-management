@@ -14,7 +14,7 @@ public class Author : Entity, IAggregateRoot
     /// <param name="email">The email address of the author.</param>
     public Author(string name, string email)
     {
-        Name = name;
+        Name = !string.IsNullOrEmpty(name) ? name : throw new ArgumentNullException("Name shouldn't be empty", nameof(name));
         Email = email;
     }
 
@@ -52,8 +52,8 @@ public class Author : Entity, IAggregateRoot
     /// </remarks>
     public void AddBook(Book book)
     {
-        var bookExist = _books.Any(e => e.ISBN == book.ISBN);
-
+        var bookExist = _books.Any(e => e.ISBN.Equals(book.ISBN) &&
+                                        string.Equals(e.Title, book.Title, StringComparison.OrdinalIgnoreCase));
         if (!bookExist)
         {
             _books.Add(book);

@@ -11,12 +11,28 @@ public class AuthorEntityConfiguration : IEntityTypeConfiguration<Author>
     /// <param name="builder">The builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<Author> builder)
     {
+        builder.Property(e => e.Id)
+               .ValueGeneratedOnAdd();
+
+        builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.Name)
+               .HasMaxLength(128)
+               .IsRequired();
+
+        builder.Property(e => e.Email)
+               .HasMaxLength(255)
+               .IsRequired();
+
+        builder.HasIndex(e => e.Email)
+               .IsUnique();
+
         // Ignore the DomainEvents property for database mapping
         builder.Ignore(b => b.DomainEvents);
 
-        // Configure the one-to-many relationship with Books
-        builder.HasMany(b => b.Books)
-               .WithOne()
-               .OnDelete(DeleteBehavior.Cascade);
+        //// Configure the one-to-many relationship with Books
+        //builder.HasMany(b => b.Books)
+        //       .WithOne()
+        //       .OnDelete(DeleteBehavior.Cascade);
     }
 }
