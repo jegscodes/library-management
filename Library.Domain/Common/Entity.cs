@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Library.Domain.Common;
 
 /// <summary>
@@ -9,13 +11,14 @@ public abstract class Entity : AuditableEntity
     /// <summary>
     /// Gets or sets the unique identifier for the entity.
     /// </summary>
-    public int Id { get; set; }
+    public int Id { get; protected set; }
 
-    private List<INotification> _domainEvents;
+    private readonly List<INotification> _domainEvents = [];
 
     /// <summary>
     /// Gets a read-only collection of domain events associated with the entity.
     /// </summary>
+    [NotMapped]
     public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
 
     /// <summary>
@@ -24,7 +27,6 @@ public abstract class Entity : AuditableEntity
     /// <param name="eventItem">The domain event to add.</param>
     public void AddDomainEvent(INotification eventItem)
     {
-        _domainEvents = _domainEvents ?? [];
         _domainEvents.Add(eventItem);
     }
 
@@ -34,7 +36,7 @@ public abstract class Entity : AuditableEntity
     /// <param name="eventItem">The domain event to remove.</param>
     public void RemoveDomainEvent(INotification eventItem)
     {
-        _domainEvents?.Remove(eventItem);
+        _domainEvents.Remove(eventItem);
     }
 
     /// <summary>
@@ -42,6 +44,6 @@ public abstract class Entity : AuditableEntity
     /// </summary>
     public void ClearDomainEvents()
     {
-        _domainEvents?.Clear();
+        _domainEvents.Clear();
     }
 }

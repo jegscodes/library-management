@@ -1,5 +1,6 @@
 using Library.Application;
 using Library.Infrastructure;
+using Library.Infrastructure.Persistence;
 
 namespace Library.Api;
 
@@ -12,7 +13,7 @@ public class Program
     /// The main method that runs the application.
     /// </summary>
     /// <param name="args">The command-line arguments.</param>
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +30,19 @@ public class Program
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
         {
+            using var scope = app.Services.CreateScope();
+            var initializer = scope.ServiceProvider.GetRequiredService<LibraryDbContextInitializer>();
+
+            await initializer.InitializeAsync();
+            await initializer.SeedAsync();
+        }
+        else
+        { 
             // Enforce HTTPS by using HSTS (HTTP Strict Transport Security) in production
             app.UseHsts();
-        }
+        } 
 
         app.UseSwagger();
         app.UseSwaggerUI();

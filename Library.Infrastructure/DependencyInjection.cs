@@ -1,4 +1,6 @@
+using Library.Infrastructure.Persistence;
 using Library.Infrastructure.Persistence.Interceptors;
+using Library.Infrastructure.Repositories;
 
 namespace Library.Infrastructure;
 
@@ -31,6 +33,11 @@ public static class DependencyInjection
             options.AddInterceptors(provider.GetRequiredService<ISaveChangesInterceptor>());
             options.UseSqlServer(connectionString);
         });
+
+        services.AddScoped<LibraryDbContextInitializer>();
+
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
 
         return services;
     }

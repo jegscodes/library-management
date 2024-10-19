@@ -1,4 +1,4 @@
-public class LibraryDbContext : DbContext
+public class LibraryDbContext : DbContext, IUnitOfWork
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="LibraryDbContext"/> class 
