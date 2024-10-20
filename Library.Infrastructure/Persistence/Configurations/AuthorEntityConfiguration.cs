@@ -22,6 +22,7 @@ public class AuthorEntityConfiguration : IEntityTypeConfiguration<Author>
 
         builder.Property(e => e.Email)
                .HasMaxLength(255)
+               .HasConversion(v => v.Value, v => Email.Create(v))
                .IsRequired();
 
         builder.HasIndex(e => e.Email)

@@ -21,7 +21,7 @@ public sealed class BookIdentifier : ValueObject
         {
             throw new InvalidISBNException("ISBN cannot be empty.");
         }
-
+        // TODO/REFACTOR: Change Implementation ?
         if (!IsValidISBN(value))
         {
             throw new InvalidISBNException("Invalid ISBN format.");

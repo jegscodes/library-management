@@ -1,5 +1,3 @@
-using Library.Domain.Common;
-
 namespace Library.Application.Common.Models;
 
 public class PaginatedList<T> : IPaginated<T> where T : class
