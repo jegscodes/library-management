@@ -31,7 +31,8 @@ public class LibraryDbContextInitializer
 
         if(!_context.Authors.Any())
         {
-            var author = new Author("Test Author", "testauthor@mailinator.com");
+            var email = Email.Create("testauthor@mailinator.com");
+            var author = new Author("Test Author", email);
 
             _context.Authors.Add(author);
         }

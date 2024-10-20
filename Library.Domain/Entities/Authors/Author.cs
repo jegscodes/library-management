@@ -12,7 +12,7 @@ public class Author : Entity, IAggregateRoot
     /// </summary>
     /// <param name="name">The name of the author.</param>
     /// <param name="email">The email address of the author.</param>
-    public Author(string name, string email) : this()
+    public Author(string name, Email email) : this()
     {
         Name = !string.IsNullOrEmpty(name) ? name : throw new ArgumentNullException("Name shouldn't be empty", nameof(name));
         Email = email;
@@ -33,7 +33,7 @@ public class Author : Entity, IAggregateRoot
     /// <summary>
     /// Gets the email address of the author.
     /// </summary>
-    public string Email { get; private set; }
+    public Email Email { get; private set; }
 
     /// <summary>
     /// Gets the name of the author.

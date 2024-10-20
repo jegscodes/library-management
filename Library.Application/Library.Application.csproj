@@ -11,10 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authors\Commands\CreateAuthor\" />
     <Folder Include="Authors\Commands\UpdateAuthor\" />
-    <Folder Include="Authors\Queries\GetAuthor\" />
-    <Folder Include="Authors\Queries\GetAuthors\" />
   </ItemGroup>
 
   <ItemGroup>

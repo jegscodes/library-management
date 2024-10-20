@@ -4,7 +4,6 @@ using Library.Application.Common.Extensions;
 using Library.Application.Common.Models;
 using Library.Application.Contracts.Requests;
 using Library.Application.Contracts.Responses;
-using Library.Domain.Entities.Books;
 
 namespace Library.Api.Controllers;
 
@@ -68,7 +67,7 @@ public class BookController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(PaginatedList<GetBookResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get([FromQuery] int pageNumber, int pageSize)
+    public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, int pageSize = 50)
     {
         var result = await _mediator.Send(new GetBooksQuery(pageNumber, pageSize));
 

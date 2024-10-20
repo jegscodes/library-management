@@ -20,7 +20,7 @@ static class TestData
         => new Book(authorId, title, CreatePublishDate(publishedDate), CreateISBN(isbn));
     
     public static BookIdentifier CreateISBN(string isbn)
-        => BookIdentifier.Create(isbn);
+        => BookIdentifier.Create(isbn); 
 
     public static PublishedDate CreatePublishDate(DateTime publishedDate)
         => PublishedDate.Create(publishedDate);
@@ -30,8 +30,9 @@ static class TestData
 
     public static Author CreateAuthor(int id, string name, string email)
     {
-        var author = new Author(name, email);
-
+        var authorEmail = Email.Create(email);
+        var author = new Author(name, authorEmail);
+          
         return author;
     }
        

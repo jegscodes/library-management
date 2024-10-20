@@ -42,4 +42,4 @@ public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
                .WithMany(b  => b.Books)
                .HasForeignKey(b => b.AuthorId);
     }
-}
+}       
