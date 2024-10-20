@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -11,9 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Books\Queries\" />
-    <Folder Include="Common\" />
-    <Folder Include="Authors\" />
+    <Folder Include="Authors\Commands\CreateAuthor\" />
+    <Folder Include="Authors\Commands\UpdateAuthor\" />
+    <Folder Include="Authors\Queries\GetAuthor\" />
+    <Folder Include="Authors\Queries\GetAuthors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
   </ItemGroup>
 
 </Project>

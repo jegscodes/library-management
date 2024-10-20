@@ -30,9 +30,10 @@ public class AuthorEntityConfiguration : IEntityTypeConfiguration<Author>
         // Ignore the DomainEvents property for database mapping
         builder.Ignore(b => b.DomainEvents);
 
-        //// Configure the one-to-many relationship with Books
-        //builder.HasMany(b => b.Books)
-        //       .WithOne()
-        //       .OnDelete(DeleteBehavior.Cascade);
+        // Configure the one-to-many relationship with Books
+        builder.HasMany(b => b.Books)
+               .WithOne(b => b.Author)
+               .HasForeignKey(b => b.AuthorId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

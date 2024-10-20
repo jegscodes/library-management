@@ -1,3 +1,4 @@
+using Library.Api.Middlewares;
 using Library.Application;
 using Library.Infrastructure;
 using Library.Infrastructure.Persistence;
@@ -23,6 +24,12 @@ public class Program
                .AddInfrastructure(builder.Configuration);
 
         builder.Services.AddControllers();
+
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -42,7 +49,9 @@ public class Program
         { 
             // Enforce HTTPS by using HSTS (HTTP Strict Transport Security) in production
             app.UseHsts();
-        } 
+        }
+
+        app.UseMiddleware<CustomExceptionHandler>();
 
         app.UseSwagger();
         app.UseSwaggerUI();

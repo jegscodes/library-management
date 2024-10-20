@@ -38,8 +38,8 @@ public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
                .IsRequired();
 
         // Configure the many-to-one relationship with Author
-        builder.HasOne<Author>()
-               .WithMany(b => b.Books)
+        builder.HasOne(b => b.Author)
+               .WithMany(b  => b.Books)
                .HasForeignKey(b => b.AuthorId);
     }
 }

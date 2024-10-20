@@ -12,7 +12,7 @@ public class Author : Entity, IAggregateRoot
     /// </summary>
     /// <param name="name">The name of the author.</param>
     /// <param name="email">The email address of the author.</param>
-    public Author(string name, string email)
+    public Author(string name, string email) : this()
     {
         Name = !string.IsNullOrEmpty(name) ? name : throw new ArgumentNullException("Name shouldn't be empty", nameof(name));
         Email = email;
@@ -23,14 +23,13 @@ public class Author : Entity, IAggregateRoot
     /// </summary>
     protected Author()
     {
-        _books = [];
+        _books = new List<Book>();
     }
 
     /// <summary>
     /// Gets a read-only collection of books written by the author.
     /// </summary>
     public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
-
     /// <summary>
     /// Gets the email address of the author.
     /// </summary>
@@ -52,8 +51,8 @@ public class Author : Entity, IAggregateRoot
     /// </remarks>
     public void AddBook(Book book)
     {
-        var bookExist = _books.Any(e => e.ISBN.Equals(book.ISBN) &&
-                                        string.Equals(e.Title, book.Title, StringComparison.OrdinalIgnoreCase));
+        var bookExist =  _books.Any(e => e.ISBN.Equals(book.ISBN) && string.Equals(e.Title, book.Title, StringComparison.OrdinalIgnoreCase));
+
         if (!bookExist)
         {
             _books.Add(book);
