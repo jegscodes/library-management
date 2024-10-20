@@ -45,7 +45,7 @@ public class AuthorController : ControllerBase
     /// <param name="pageSize">The number of authors per page (default is 50).</param>
     /// <returns>An <see cref="IActionResult"/> containing the paginated list of authors.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(PaginatedList<Author>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedList<GetAuthorResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, int pageSize = 50)
     {
         var result = await _mediator.Send(new GetAuthorsQuery(pageNumber, pageSize));
@@ -61,7 +61,7 @@ public class AuthorController : ControllerBase
     /// <param name="authorId">The unique identifier of the author.</param>
     /// <returns>An <see cref="IActionResult"/> containing the author details or a not found status.</returns>
     [HttpGet("{authorId:int}")]
-    [ProducesResponseType(typeof(Author), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetAuthorResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] int authorId)
     {
@@ -72,6 +72,9 @@ public class AuthorController : ControllerBase
             return NotFound(result.Error);
         }
 
-        return Ok(result.Value());
+        var authorResponse = result.Value()
+                                   .ToAuthorResponse();
+
+        return Ok(authorResponse);
     }
 }
