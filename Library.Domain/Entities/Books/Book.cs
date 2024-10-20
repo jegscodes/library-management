@@ -27,7 +27,7 @@ public class Book : Entity, IAggregateRoot
     /// <summary>
     /// Gets the author of the book.
     /// </summary>
-    public Author Author { get; }
+    public Author Author { get; private set; }
 
     /// <summary>
     /// Gets the identifier for the author of the book.
@@ -49,4 +49,27 @@ public class Book : Entity, IAggregateRoot
     /// Gets the title of the book.
     /// </summary>
     public string Title { get; private set; }
+
+
+    public void Update(string title, BookIdentifier isbn, PublishedDate publishedDate)
+    {
+        Title = title;
+        ISBN = isbn;
+        PublishedDate = publishedDate;
+    }
+
+    public void UpdateAuthor(int authorId)
+    {
+        if(authorId < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(authorId), "Invalid Author Id");
+        }
+
+        AuthorId = authorId;
+    }
+
+    public bool AuthorChanged(int authorId)
+    {
+        return AuthorId != authorId ? true : false;
+    }
 }
