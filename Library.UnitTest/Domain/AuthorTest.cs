@@ -1,21 +1,25 @@
 namespace Library.UnitTest.Domain;
 
 /// <summary>
-/// Entry point for author test.
+/// Contains unit tests for the <see cref="Author"/> class, validating author creation and behavior.
 /// </summary>
 public class AuthorTest
 {
     /// <summary>
-    /// Constructor of Author test.
+    /// Initializes a new instance of the <see cref="AuthorTest"/> class.
     /// </summary>
     public AuthorTest() { }
 
+    /// <summary>
+    /// Tests the creation of a new author.
+    /// This method verifies that a valid name and email address create a non-null <see cref="Author"/> object
+    /// with the expected properties.
+    /// </summary>
+    /// <param name="name">The name of the author.</param>
+    /// <param name="email">The email address of the author.</param>
     [Theory]
     [InlineData("John Doe", "jdoe@test.com")]
     [InlineData("Jane Smith", "jsmith@test.com")]
-    /// <summary>
-    /// Test method for new author.
-    /// </summary>
     public void NewAuthor_Should_ReturnAuthor(string name, string email)
     {
         // Arrange
@@ -31,7 +35,8 @@ public class AuthorTest
     }
 
     /// <summary>
-    /// Test method for invalid name, if invalid then throw null.
+    /// Tests the creation of an author with an invalid name.
+    /// This method verifies that providing an empty name throws an <see cref="ArgumentNullException"/>.
     /// </summary>
     [Fact]
     public void NewAuthor_InvalidName_ShouldThrowArgumentNullExceptionError()
@@ -45,7 +50,8 @@ public class AuthorTest
     }
 
     /// <summary>
-    /// Test method for new author, if author is new then book should be empty.
+    /// Tests that a newly created author has an empty book collection.
+    /// This method verifies that when an author is instantiated, their initial list of books is empty.
     /// </summary>
     [Fact]
     public void NewAuthor_Valid_ShouldReturnEmptyBooks()
@@ -58,7 +64,9 @@ public class AuthorTest
     }
 
     /// <summary>
-    /// Test method for new author with new book. 
+    /// Tests the functionality of adding a book to an author.
+    /// This method verifies that after adding a book to the author's collection,
+    /// the book should be present in the author's list of books.
     /// </summary>
     [Fact]
     public void Author_AddBook_ShouldContainBook()
@@ -73,5 +81,4 @@ public class AuthorTest
         // Assert
         author.Books.Should().Contain(book);
     }
-
 }

@@ -1,4 +1,5 @@
 global using FluentAssertions;
+global using Library.Application.Authors.Commands.CreateAuthor;
 global using Library.Application.Authors.Queries.GetAuthor;
 global using Library.Application.Books.Commands;
 global using Library.Application.Books.Commands.UpdateBook;

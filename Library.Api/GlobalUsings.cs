@@ -1,6 +1,16 @@
+global using Library.Application.Authors.Commands.CreateAuthor;
+global using Library.Application.Authors.Queries.GetAuthor;
+global using Library.Application.Authors.Queries.GetAuthors;
 global using Library.Application.Books.Commands;
+global using Library.Application.Books.Commands.UpdateBook;
 global using Library.Application.Books.Queries.GetBook;
+global using Library.Application.Books.Queries.GetBooks;
 global using Library.Application.Common.Exceptions;
+global using Library.Application.Common.Extensions;
+global using Library.Application.Common.Models;
+global using Library.Application.Contracts.Requests;
+global using Library.Application.Contracts.Responses;
+global using Library.Domain.Entities.Authors;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
 global using System.Net;

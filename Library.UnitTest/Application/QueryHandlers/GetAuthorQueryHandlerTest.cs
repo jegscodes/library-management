@@ -1,60 +1,81 @@
-using Library.Application.Books.Queries.GetBook;
-
 namespace Library.UnitTest.Application.QueryHandlers;
 
+/// <summary>
+/// Contains unit tests for the <see cref="GetAuthorQueryHandler"/> class,
+/// which handles the retrieval of author queries.
+/// </summary>
 public class GetAuthorQueryHandlerTest : BaseQueryHandlerTest
 {
-    private GetAuthorQueryHandler _getAuthorQueryHandler;
+    private readonly GetAuthorQueryHandler _getAuthorQueryHandler;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetAuthorQueryHandlerTest"/> class.
+    /// </summary>
     public GetAuthorQueryHandlerTest()
     {
         _getAuthorQueryHandler = new GetAuthorQueryHandler(_mockAuthorRepository.Object);
     }
 
-
-    [Fact]
-    public async Task GetBook_ValidBook_ShouldReturnSuccess()
-    {
-        var auhtorId = 1;
-
-        var query = new GetAuthorQuery(auhtorId);
-
-        SetUpSingleAuthorMock(auhtorId, TestData.CreateDefaultAuthor());
-
-        var result = await _getAuthorQueryHandler.Handle(query, default);
-
-        result.Should().NotBeNull();
-        result.IsSuccess.Should().BeTrue();
-    }
-
-    [Fact]
-    public async Task GetBook_NotFoundBook_ShouldReturnFailure()
-    {
-        var auhtorId = 1;
-
-        var query = new GetAuthorQuery(auhtorId);
-
-        SetUpSingleAuthorMock(auhtorId, null);
-
-        var result = await _getAuthorQueryHandler.Handle(query, default);
-
-        result.IsFailure.Should().BeTrue();
-        result.IsSuccess.Should().BeFalse();
-    }
-
+    /// <summary>
+    /// Tests that the failure result contains the correct error message when
+    /// attempting to retrieve an author that does not exist.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     [Fact]
     public async Task GetBook_NotFoundBook_ShouldHaveCorrectMessage()
     {
-        var auhtorId = 1;
+        // Arrange
+        var authorId = 1;
+        var query = new GetAuthorQuery(authorId);
+        SetUpSingleAuthorMock(authorId, null);
 
-        var query = new GetAuthorQuery(auhtorId);
-
-        SetUpSingleAuthorMock(auhtorId, null);
-
+        // Act
         var result = await _getAuthorQueryHandler.Handle(query, default);
 
+        // Assert
         result.IsFailure.Should().BeTrue();
         result.IsSuccess.Should().BeFalse();
+        result.Error.Should().Be($"Author with ID {authorId} couldn't be found");
+    }
 
-        result.Error.Should().Be($"Author with ID {auhtorId} couldn't be found");
+    /// <summary>
+    /// Tests that the handler returns a failure when attempting to retrieve an author
+    /// with a non-existent author ID.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    [Fact]
+    public async Task GetBook_NotFoundBook_ShouldReturnFailure()
+    {
+        // Arrange
+        var authorId = 1;
+        var query = new GetAuthorQuery(authorId);
+        SetUpSingleAuthorMock(authorId, null);
+
+        // Act
+        var result = await _getAuthorQueryHandler.Handle(query, default);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.IsSuccess.Should().BeFalse();
+    }
+
+    /// <summary>
+    /// Tests that the handler successfully retrieves an author when a valid author ID is provided.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    [Fact]
+    public async Task GetBook_ValidBook_ShouldReturnSuccess()
+    {
+        // Arrange
+        var authorId = 1;
+        var query = new GetAuthorQuery(authorId);
+        SetUpSingleAuthorMock(authorId, TestData.CreateDefaultAuthor());
+
+        // Act
+        var result = await _getAuthorQueryHandler.Handle(query, default);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.IsSuccess.Should().BeTrue();
     }
 }

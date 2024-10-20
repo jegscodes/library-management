@@ -4,6 +4,6 @@ public class UpdateAuthorCommandHandlerTest : BaseCommandHandlerTest
 {
     public UpdateAuthorCommandHandlerTest()
     {
-        
+        // TODO
     }
 }
