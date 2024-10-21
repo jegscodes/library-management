@@ -52,6 +52,7 @@ public class Program
         }
 
         app.UseMiddleware<CustomExceptionHandler>();
+        app.UseMiddleware<RateLimitHandler>();
 
         app.UseSwagger();
         app.UseSwaggerUI();
