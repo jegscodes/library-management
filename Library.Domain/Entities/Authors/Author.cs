@@ -1,3 +1,5 @@
+using Library.Domain.Events;
+
 namespace Library.Domain.Entities.Authors;
 
 /// <summary>
@@ -16,6 +18,8 @@ public class Author : Entity, IAggregateRoot
     {
         Name = !string.IsNullOrEmpty(name) ? name : throw new ArgumentNullException("Name shouldn't be empty", nameof(name));
         Email = email;
+
+        AddDomainEvent(new AuthorCreatedDomainEvent(name));
     }
 
     /// <summary>
@@ -56,6 +60,8 @@ public class Author : Entity, IAggregateRoot
         if (!bookExist)
         {
             _books.Add(book);
+
+            AddDomainEvent(new BookAddedDomainEvent(book));
         }
     }
 }
