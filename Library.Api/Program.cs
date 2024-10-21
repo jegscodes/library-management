@@ -2,6 +2,8 @@ using Library.Api.Middlewares;
 using Library.Application;
 using Library.Infrastructure;
 using Library.Infrastructure.Persistence;
+using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace Library.Api;
 
@@ -19,6 +21,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Host.UseSerilog((ctx, log) =>
+        {
+            log.ReadFrom.Configuration(builder.Configuration)
+               .Enrich.WithMachineName();
+        });
+
         builder.Services
                .AddApplicationServices()
                .AddInfrastructure(builder.Configuration);
@@ -32,13 +40,18 @@ public class Program
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Library API", Version = "v1" });
+        });
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
+            Log.Information("Initializing Database Migration");
             using var scope = app.Services.CreateScope();
             var initializer = scope.ServiceProvider.GetRequiredService<LibraryDbContextInitializer>();
 
@@ -55,7 +68,10 @@ public class Program
         app.UseMiddleware<RateLimitHandler>();
 
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library API - v1");
+        });
 
         app.UseHttpsRedirection();
         app.UseAuthorization();

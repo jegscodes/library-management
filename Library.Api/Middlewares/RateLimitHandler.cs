@@ -30,6 +30,8 @@ namespace Library.Api.Middlewares
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task InvokeAsync(HttpContext context)
         {
+            // TODO : Add cache.
+
             var clientIp = context.Connection.RemoteIpAddress?.ToString();
 
             if (clientIp != null)
@@ -41,6 +43,7 @@ namespace Library.Api.Middlewares
                     {
                         rateLimitInfo = new RateLimitInfo();
                         _clients[clientIp] = rateLimitInfo;
+                        Log.Information("New Request By: {ClientIp}", clientIp);
                     }
 
                     // Check if the time window has elapsed
@@ -48,6 +51,7 @@ namespace Library.Api.Middlewares
                     {
                         rateLimitInfo.Timestamp = DateTime.UtcNow;
                         rateLimitInfo.RequestCount = 1;
+                        Log.Information("Request count reset for client: {ClientIp}", clientIp);
                     }
                     else
                     {
@@ -55,6 +59,7 @@ namespace Library.Api.Middlewares
                         // If the request count exceeds the limit, return a 429 status code
                         if (rateLimitInfo.RequestCount > _maxRequests)
                         {
+                            Log.Warning(clientIp, "Exceeded Request Limit");
                             context.Response.StatusCode = StatusCodes.Status429TooManyRequests; 
                             await context.Response.WriteAsync("Please try again later.");
                             return;
