@@ -39,6 +39,20 @@ The backend is structured using Clean Architecture, which promotes separation of
 - **Testability**: Each component can be tested in isolat
 - **Flexibility**: Easy to swap out frameworks or libraries without altering business logic.
 
+#### Library API Configuration
+
+## Connection String Setup
+
+To configure the database connection string, locate the `appsettings.Development.json` file in the root of the project and update the `DefaultConnection` entry.
+
+### Example Connection String
+
+```json
+"ConnectionStrings": {
+    "DefaultConnection": "Server=your_server;Database=your_dbname;User Id=your_username;Password=your_password;Trusted_Connection=True;MultipleActiveResultSets=true;   TrustServerCertificate=true;"
+}
+```
+
 #### Backend Setup
 1. Clone the repository
   ```bash
